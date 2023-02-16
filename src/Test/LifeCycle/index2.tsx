@@ -23,6 +23,11 @@ class Child1 extends Component<Child1Props, ChildState> {
     }
   }
 
+  static getDerivedStateFromProps() {
+    console.log('---child1 getDerivedStateFromProps');
+    return null;
+  }
+
 
   componentDidMount(): void {
     console.log('---child1 componentDidMount');
@@ -109,4 +114,25 @@ export default class Index2 extends Component<Readonly<{}>, Index2State> {
 ---child1 render
 ---child1 componentDidMount
 ---componentDidMount
+ */
+
+/**
+ * getDerivedStateFromProps
+ * getDerivedStateFromProps is invoked right before calling the render method, both on the initial mount and on subsequent updates.
+ */
+
+/**
+ * 更改父组件count || name
+ * ---render
+ * ---child1 getDerivedStateFromProps
+ * ---child1 render
+ * ---child1 componentDidUpdate
+ * ---componentDidUpdate
+ */
+
+/**
+ * 更改子组件random
+ * ---child1 getDerivedStateFromProps
+ * ---child1 render
+ * ---child1 componentDidUpdate
  */
