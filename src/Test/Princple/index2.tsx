@@ -13,21 +13,49 @@ interface Index2State {
 
 
 class Button1 extends Component<ButtonProps, Readonly<{}>> {
+  state = {
+    btn1Name: 'buttton1'
+  }
+  onChangeBtn1Name = () => {
+    console.log('onChangeBtn1Name');
+    this.setState({
+      btn1Name: 'buttton1' //  ❌会重复渲染
+    })
+  }
   render(){
     console.log(`render button1 props: ${JSON.stringify(this.props)}}`);
     const { color, text } = this.props;
     return (
-      <button style={{ background: color }}>Button1: {text}</button>
+      <div>
+        button1 btn1Name: {this.state.btn1Name}
+        <div>
+          <button style={{ background: color }} onClick={this.onChangeBtn1Name}>Button1: {text}</button>
+        </div>
+      </div>
     );  
   }
 }
 
-class Button2 extends PureComponent<ButtonProps, Readonly<{}>> {
+class Button2 extends PureComponent<ButtonProps, {btn2Name: string}> {
+  state = {
+    btn2Name: 'buttton2'
+  }
+  onChangeBtn2Name = () => {
+    this.setState({
+      btn2Name: 'buttton2' // ✅可以阻止重复渲染
+    })
+  }
   render(){
     console.log(`render button2 props: ${JSON.stringify(this.props)}}`);
     const { color, text } = this.props;
     return (
-      <button style={{ background: color }}>Button2: {text}</button>
+      <div>
+        button2 btn2Name: {this.state.btn2Name}
+        <div>
+          <button style={{ background: color }} onClick={this.onChangeBtn2Name}>Button2: {text}</button>
+        </div>
+      </div>
+      
     );  
   }
 }
@@ -72,6 +100,8 @@ class Index2 extends Component<Readonly<{}>, Index2State> {
 
 /**
  * 比较Component 和 PureComponet
+ * PureComponent is similar to Component but it skips re-renders for same props and state；
+ * shouldComponetUpdate
  */
 export default Index2;
 
