@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import './index2.css';
 
 interface Index2State {
@@ -8,10 +8,12 @@ interface Index2State {
 
 interface Child1Props {
   count: number;
+  onChangeCount: () => void;
 }
 
 interface ChildState {
   random: number;
+  domRef: any;
 }
 
 class Child1 extends Component<Child1Props, ChildState> {
@@ -19,22 +21,35 @@ class Child1 extends Component<Child1Props, ChildState> {
     super(props);
     console.log('---child constructor');
     this.state = {
-      random: 0
+      random: 0,
+      domRef: createRef()
     }
   }
 
-  static getDerivedStateFromProps() {
+  static getDerivedStateFromProps(props: Child1Props) {
     console.log('---child1 getDerivedStateFromProps');
+    // return null;
+    return {
+      random: props.count < 5 ? 1 : 100
+    }
+  }
+
+  getSnapshotBeforeUpdate(prevProps: Readonly<Child1Props>, prevState: Readonly<ChildState>) {
+    console.log('---child1 getSnapshotBeforeUpdate');
     return null;
   }
 
 
   componentDidMount(): void {
-    console.log('---child1 componentDidMount');
+    console.log('---child1 componentDidMount', this.state.domRef);
   }
 
   componentDidUpdate(prevProps: Readonly<Child1Props>, prevState: Readonly<ChildState>, snapshot?: any): void {
     console.log('---chid1 componentDidUpdate', this.props.count, this.state.random);
+    /** 🟢 react 保证在用户看到更新的UI之前，调用发生在 componentDidMount 和 componentDidUpdate 的setState */
+    if (prevProps.count < 3) {
+      this.props.onChangeCount();
+    }
   }
 
   changeRandom = () => {
@@ -46,7 +61,7 @@ class Child1 extends Component<Child1Props, ChildState> {
   render() {
     console.log('---child1 render');
     return (
-      <div className="child">
+      <div className="child" ref={this.state.domRef}>
         <p>child1 random: {this.state.random}</p>
         <p>child1 count {this.props.count}</p>
         <div>
@@ -71,9 +86,9 @@ export default class Index2 extends Component<Readonly<{}>, Index2State> {
       console.log('---componentDidMount'); // 3
   }
 
-  shouldComponentUpdate(nextProps: Readonly<Readonly<{}>>, nextState: Readonly<Index2State>, nextContext: any): boolean {
-    return false;
-  }
+  // shouldComponentUpdate(nextProps: Readonly<Readonly<{}>>, nextState: Readonly<Index2State>, nextContext: any): boolean {
+  //   return false;
+  // }
 
   componentDidUpdate(prevProps: Readonly<Readonly<{}>>, prevState: Readonly<Index2State>, snapshot?: any): void {
     console.log('---componentDidUpdate', this.state.count);
@@ -104,7 +119,7 @@ export default class Index2 extends Component<Readonly<{}>, Index2State> {
             <button onClick={this.addCount}>add count</button>
             <button onClick={this.changeName}>change name</button>
           </div>
-          <Child1 count={count}/>
+          <Child1 count={count} onChangeCount={this.addCount} />
       </div>
     )
   }
