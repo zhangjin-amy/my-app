@@ -71,6 +71,10 @@ export default class Index2 extends Component<Readonly<{}>, Index2State> {
       console.log('---componentDidMount'); // 3
   }
 
+  shouldComponentUpdate(nextProps: Readonly<Readonly<{}>>, nextState: Readonly<Index2State>, nextContext: any): boolean {
+    return false;
+  }
+
   componentDidUpdate(prevProps: Readonly<Readonly<{}>>, prevState: Readonly<Index2State>, snapshot?: any): void {
     console.log('---componentDidUpdate', this.state.count);
   }
