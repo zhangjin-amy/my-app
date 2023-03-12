@@ -9,7 +9,10 @@ import './App.css';
 // import Index3 from './Test/LifeCycle/index3';
 // import Index1 from './Test/Princple/derivedState';
 // import Index4 from './Test/LifeCycle/index4';
-import Index1 from './Test/hook/index1';
+// import Index1 from './Test/hook/index1';
+// import Index1 from './Test/hook/context/index1';
+// import Index3 from './Test/hook/context/index3';
+import Index from './Test/hook/context/demo1';
 
 function App() {
   return (
@@ -17,8 +20,9 @@ function App() {
       {/* <Parent /> */}
       {/* <Index2 /> */}
       {/* <Index3 /> */}
-      <Index1 />
+      {/* <Index1 /> */}
       {/* <Index4 /> */}
+      <Index />
     </div>
   );
 }
